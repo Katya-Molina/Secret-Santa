@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f2a1b">
+<meta name="robots" content="noindex">
+<title>Organizador · Secret Santa</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎅</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body class="pagina-admin">
+
+<div class="copos" aria-hidden="true">
+  <svg class="c1"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c2"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c3"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c4"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c5"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c7"><use href="ilustraciones.svg#copo"/></svg>
+</div>
+
+<main class="contenedor">
+
+  <!-- Entrar como organizador -->
+  <section class="tarjeta entrar" id="entrar-admin">
+    <img class="entrar-ilus" src="img/gorro.webp" alt="">
+    <h2>Panel del organizador</h2>
+    <p class="suave">Escribe la contraseña de administración para agregar participantes, ver sus códigos y hacer el sorteo.</p>
+    <form id="form-admin" class="pildora">
+      <input id="clave" type="password" autocomplete="current-password" placeholder="Contraseña" aria-label="Contraseña" required>
+      <button class="btn">Entrar <span aria-hidden="true">»</span></button>
+    </form>
+    <p class="error" id="error-admin" role="alert"></p>
+    <p class="volver"><a href="/">← Volver a la página del juego</a></p>
+  </section>
+
+  <!-- Panel -->
+  <section id="admin" hidden>
+    <div class="saludo">
+      <div>
+        <p class="amarillo">Panel del organizador</p>
+        <h2 id="admin-titulo">Secret Santa</h2>
+      </div>
+      <div class="botones">
+        <a class="btn-sec" href="/" target="_blank" rel="noopener">Ver página</a>
+        <button class="btn-sec" id="salir-admin">Salir</button>
+      </div>
+    </div>
+
+    <div class="resumen">
+      <div class="dato"><img src="img/muneco.webp" alt=""><div><strong id="r-personas">0</strong><span>participantes</span></div></div>
+      <div class="dato"><img src="img/regalo.webp" alt=""><div><strong id="r-sorteo">Pendiente</strong><span>sorteo</span></div></div>
+      <div class="dato"><img src="img/arbol.webp" alt=""><div><strong id="r-listas">0</strong><span>listas hechas</span></div></div>
+      <div class="dato"><img src="img/campana.webp" alt=""><div><strong id="r-juegos">0</strong><span>juegos propuestos</span></div></div>
+    </div>
+
+    <div class="rejilla admin-rejilla">
+      <!-- Participantes -->
+      <div class="tarjeta con-ilus participantes-admin">
+        <img class="esquina" src="img/jengibre.webp" alt="">
+        <h3>Participantes</h3>
+        <p class="suave">Agrega uno o varios nombres separados por comas. Cada persona recibe un código navideño.</p>
+        <form id="form-agregar" class="pildora">
+          <input name="nombres" maxlength="400" placeholder="Ej. Ana, Luis, Carla" aria-label="Nombres" required>
+          <button class="btn">Agregar</button>
+        </form>
+        <p class="error" id="error-agregar" role="alert"></p>
+        <ul class="lista-admin" id="lista-admin"></ul>
+      </div>
+
+      <div class="columna">
+        <!-- Sorteo -->
+        <div class="tarjeta con-ilus caja-sorteo">
+          <img class="esquina" src="img/trineo.webp" alt="">
+          <h3>Sorteo</h3>
+          <p class="suave" id="sorteo-texto">Cuando estén todos, haz el sorteo.</p>
+          <button class="btn btn-grande" id="hacer-sorteo">🎲 Hacer el sorteo</button>
+          <p class="error" id="error-sorteo" role="alert"></p>
+          <p class="ok" id="ok-sorteo" role="status"></p>
+          <p class="suave nota-chica">Nadie, ni tú, puede ver quién le tocó a quién desde este panel.</p>
+        </div>
+
+        <!-- Evento -->
+        <div class="tarjeta con-ilus">
+          <img class="esquina" src="img/corona.webp" alt="">
+          <h3>Datos del evento</h3>
+          <form id="form-evento" class="formulario">
+            <label>Nombre del evento
+              <input name="nombre" maxlength="60" placeholder="Secret Santa 2026" required>
+            </label>
+            <label>Fecha y hora
+              <input name="fecha" type="datetime-local">
+            </label>
+            <label>Lugar
+              <input name="lugar" maxlength="80" placeholder="Ej. Casa de Ana">
+            </label>
+            <div class="dos">
+              <label>Presupuesto
+                <input name="presupuesto" type="number" min="1" step="0.01" inputmode="decimal" required>
+              </label>
+              <label>Moneda
+                <input name="moneda" maxlength="6" placeholder="USD">
+              </label>
+            </div>
+            <label>Mensaje para todos <span class="suave">(opcional)</span>
+              <input name="mensaje" maxlength="160" placeholder="Ej. Trae tu regalo envuelto">
+            </label>
+            <div class="acciones">
+              <button class="btn">Guardar</button>
+            </div>
+            <p class="error" id="error-evento" role="alert"></p>
+            <p class="ok" id="ok-evento" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="aviso" id="aviso" role="status" hidden></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

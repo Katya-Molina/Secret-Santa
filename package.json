@@ -1,0 +1,13 @@
+{
+  "name": "secret-santa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Secret Santa con panel de organizador, lista de deseos anónima y propuestas de juegos",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.7"
+  }
+}

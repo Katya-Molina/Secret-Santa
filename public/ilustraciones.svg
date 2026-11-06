@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Copo de nieve de línea para el fondo. Las ilustraciones 3D están en la carpeta img/ -->
+  <symbol id="copo" viewBox="0 0 40 40">
+    <g stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none">
+      <path d="M20 2 V38 M4.4 11 L35.6 29 M4.4 29 L35.6 11"/>
+      <path d="M16 6 L20 10 L24 6 M16 34 L20 30 L24 34"/>
+    </g>
+  </symbol>
+</svg>

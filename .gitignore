@@ -1,0 +1,7 @@
+# Privado: nunca lo subas
+.env
+
+node_modules/
+.netlify/
+__pycache__/
+.DS_Store

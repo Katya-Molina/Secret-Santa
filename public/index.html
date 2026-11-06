@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f2a1b">
+<title>Secret Santa</title>
+<meta name="description" content="Sorteo, lista de deseos anónima y juegos para nuestro Secret Santa.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<!-- Copos de nieve decorativos -->
+<div class="copos" aria-hidden="true">
+  <svg class="c1"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c2"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c3"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c4"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c5"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c6"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c7"><use href="ilustraciones.svg#copo"/></svg>
+  <svg class="c8"><use href="ilustraciones.svg#copo"/></svg>
+</div>
+
+<main class="contenedor">
+
+  <!-- Portada + datos del evento -->
+  <section class="inicio">
+    <article class="tarjeta hero">
+      <img class="hero-acebo" src="img/acebo.webp" alt="" loading="lazy" decoding="async">
+      <img class="hero-esfera" src="img/esfera.webp" alt="" loading="lazy" decoding="async">
+      <img class="hero-santa" src="img/santa.webp" alt="" loading="lazy" decoding="async">
+      <img class="hero-regalo" src="img/regalo.webp" alt="" loading="lazy" decoding="async">
+      <div class="hero-texto">
+        <p class="etiqueta">Intercambio de regalos</p>
+        <h1 id="evento-nombre">Secret Santa</h1>
+        <p class="mensaje" id="evento-mensaje">¡Jo, jo, jo! Prepárate para dar y recibir.</p>
+      </div>
+      <div class="cuenta" id="cuenta" hidden>
+        <div><strong id="cd-d">0</strong><span>días</span></div>
+        <div><strong id="cd-h">0</strong><span>horas</span></div>
+        <div><strong id="cd-m">0</strong><span>min</span></div>
+        <div><strong id="cd-s">0</strong><span>seg</span></div>
+      </div>
+    </article>
+
+    <article class="tarjeta info">
+      <h2>Tu Secret Santa</h2>
+      <p class="amarillo">Todo lo que necesitas saber</p>
+      <div class="mosaicos">
+        <div class="mosaico">
+          <img class="ilus" src="img/jengibre.webp" alt="" loading="lazy" decoding="async">
+          <strong>Amigo secreto</strong>
+          <span id="tile-amigo">Entra para verlo</span>
+        </div>
+        <div class="mosaico">
+          <div class="calendario" aria-hidden="true">
+            <span class="cal-dia" id="cal-dia">25</span><span class="cal-mes" id="cal-mes">DIC</span>
+          </div>
+          <strong>Fecha</strong>
+          <span id="tile-fecha">Por definir</span>
+        </div>
+        <div class="mosaico">
+          <img class="ilus" src="img/mono.webp" alt="" loading="lazy" decoding="async">
+          <strong>Presupuesto</strong>
+          <span>Hasta <b id="evento-presupuesto">$25</b></span>
+        </div>
+        <div class="mosaico">
+          <img class="ilus" src="img/corona.webp" alt="" loading="lazy" decoding="async">
+          <strong>Lugar</strong>
+          <span id="tile-lugar">Por definir</span>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Entrar -->
+  <section class="tarjeta entrar" id="entrar">
+    <img class="entrar-ilus" src="img/regalo.webp" alt="" loading="lazy" decoding="async">
+    <h2>¡Ya huele a Navidad!</h2>
+    <p class="suave">Escribe el código secreto que te envió el organizador. No lo compartas con nadie.</p>
+    <form id="form-entrar" class="pildora">
+      <input id="codigo" name="codigo" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false"
+             placeholder="Ej. reno-canela-27" aria-label="Tu código" required>
+      <button class="btn">Entrar <span aria-hidden="true">»</span></button>
+    </form>
+    <p class="error" id="error-entrar" role="alert"></p>
+  </section>
+
+  <!-- Panel personal -->
+  <section id="panel" hidden>
+    <div class="saludo">
+      <div>
+        <p class="amarillo">Hola,</p>
+        <h2 id="mi-nombre"></h2>
+      </div>
+      <button class="btn-sec" id="salir">Salir</button>
+    </div>
+
+    <nav class="pestanas" role="tablist" aria-label="Secciones">
+      <button role="tab" data-tab="amigo" aria-selected="true">
+        <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M3 13h18M12 9v12M12 9C9 3 5 5 7 8c1 1 5 1 5 1zm0 0c3-6 7-4 5-1-1 1-5 1-5 1z"/></svg>
+        <span>Mi amigo</span>
+      </button>
+      <button role="tab" data-tab="lista">
+        <svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>
+        <span>Mi lista</span>
+      </button>
+      <button role="tab" data-tab="buzon">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-5 4V6a1 1 0 0 1 1-1z"/></svg>
+        <span>Buzón</span>
+        <i class="burbuja" id="burbuja-buzon" hidden></i>
+      </button>
+      <button role="tab" data-tab="juego">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="15.5" cy="8.5" r="1.3"/><circle cx="8.5" cy="15.5" r="1.3"/></svg>
+        <span>Mi juego</span>
+      </button>
+    </nav>
+
+    <!-- Mi amigo secreto -->
+    <div class="tab" data-panel="amigo">
+      <div class="tarjeta revelar">
+        <p class="etiqueta" id="revelar-etiqueta">Te toca regalarle a…</p>
+        <div class="sin-sorteo" id="sin-sorteo" hidden>
+          <img src="img/muneco.webp" alt="" >
+          <p><b>El sorteo aún no se hace.</b><br>Mientras tanto, escribe tu lista de deseos y propón tu juego. Te avisaremos cuando ya puedas ver a quién te toca.</p>
+        </div>
+        <button class="sobre" id="sobre" aria-label="Toca el regalo para revelar">
+          <img class="sobre-regalo" src="img/regalo.webp" alt="" loading="lazy" decoding="async">
+          <span class="sobre-tapa">Toca el regalo ✨</span>
+          <span class="sobre-nombre">
+            <img class="estrella-ilus" src="img/estrella.webp" alt="" loading="lazy" decoding="async">
+            <b id="amigo-nombre"></b>
+          </span>
+        </button>
+        <label class="interruptor" id="caja-comprado">
+          <input type="checkbox" id="comprado">
+          <span class="riel" aria-hidden="true"></span>
+          Ya compré el regalo
+        </label>
+      </div>
+
+      <div id="amigo-extra">
+      <div class="rejilla">
+        <div class="tarjeta">
+          <h3>Su lista de deseos</h3>
+          <ul class="deseos" id="deseos-amigo"><li class="vacio">Cargando…</li></ul>
+        </div>
+        <div class="tarjeta">
+          <h3>Pregúntale en secreto</h3>
+          <p class="suave">No sabrá que eres tú. Ej. "¿Qué talla usas?" o "¿Dulce o salado?"</p>
+          <form id="form-pregunta" class="pildora">
+            <input name="texto" maxlength="280" placeholder="Escribe tu pregunta…" required>
+            <button class="btn">Enviar</button>
+          </form>
+          <ul class="hilo" id="hilo-preguntas"></ul>
+        </div>
+      </div>
+
+      <div class="tarjeta con-ilus">
+        <img class="esquina" src="img/campana.webp" alt="" loading="lazy" decoding="async">
+        <h3>Déjale una pista misteriosa</h3>
+        <p class="suave">Pistas sobre ti para que intente adivinar quién es su Santa el día del intercambio. Ej. "Me encanta el café sin azúcar".</p>
+        <form id="form-pista" class="pildora">
+          <input name="texto" maxlength="280" placeholder="Escribe una pista…" required>
+          <button class="btn">Dejar pista</button>
+        </form>
+        <ul class="hilo" id="hilo-pistas"></ul>
+      </div>
+      </div>
+    </div>
+
+    <!-- Mi lista -->
+    <div class="tab" data-panel="lista" hidden>
+      <div class="tarjeta con-ilus">
+        <img class="esquina" src="img/arbol.webp" alt="" loading="lazy" decoding="async">
+        <h3>Mi lista de deseos</h3>
+        <p class="suave">Hasta 5 ideas, cada una de máximo <b class="limite amarillo">$25</b>. Tu Santa la verá sin que sepas quién es.</p>
+        <form id="form-lista">
+          <div id="filas-lista"></div>
+          <div class="acciones">
+            <button type="button" class="btn-sec" id="agregar-deseo">+ Agregar idea</button>
+            <button class="btn">Guardar lista</button>
+          </div>
+          <p class="error" id="error-lista" role="alert"></p>
+          <p class="ok" id="ok-lista" role="status"></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mi buzón -->
+    <div class="tab" data-panel="buzon" hidden>
+      <div class="rejilla">
+        <div class="tarjeta">
+          <h3>Preguntas de tu Santa</h3>
+          <ul class="hilo" id="buzon-preguntas"></ul>
+        </div>
+        <div class="tarjeta">
+          <h3>Pistas de tu Santa</h3>
+          <p class="suave">¿Adivinas quién es? Lo descubrirás el día del intercambio.</p>
+          <ul class="hilo" id="buzon-pistas"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mi juego -->
+    <div class="tab" data-panel="juego" hidden>
+      <div class="tarjeta con-ilus">
+        <img class="esquina" src="img/esfera.webp" alt="" loading="lazy" decoding="async">
+        <h3>Propón un juego para el gran día</h3>
+        <p class="suave">Cada persona propone un juego de mesa o interactivo. Tu propuesta se verá públicamente con tu nombre.</p>
+        <div class="nota">
+          🏆 <b>¿Le ponemos más feeling?</b> Si gustas, puedes aportar un regalo para quien gane tu juego. Es totalmente opcional.
+        </div>
+        <form id="form-juego" class="formulario">
+          <label>Nombre del juego
+            <input name="titulo" maxlength="80" required placeholder="Ej. Pictionary navideño">
+          </label>
+          <fieldset class="opciones">
+            <legend>Tipo</legend>
+            <label><input type="radio" name="tipo" value="mesa" checked><span>🎲 De mesa</span></label>
+            <label><input type="radio" name="tipo" value="interactivo"><span>🙌 Interactivo</span></label>
+          </fieldset>
+          <label>¿Cómo se juega?
+            <textarea name="descripcion" maxlength="500" rows="3" placeholder="Explícalo en pocas palabras…"></textarea>
+          </label>
+          <div class="dos">
+            <label>Jugadores
+              <input name="jugadores" maxlength="40" placeholder="Ej. 4 a 10">
+            </label>
+            <label>Duración
+              <input name="duracion" maxlength="40" placeholder="Ej. 20 min">
+            </label>
+          </div>
+          <label>Regalo para el ganador <span class="suave">(opcional)</span>
+            <input name="premio" maxlength="120" placeholder="Ej. Una taza navideña y chocolates">
+          </label>
+          <div class="acciones">
+            <button type="button" class="btn-texto" id="borrar-juego" hidden>Retirar mi propuesta</button>
+            <button class="btn">Publicar mi juego</button>
+          </div>
+          <p class="error" id="error-juego" role="alert"></p>
+          <p class="ok" id="ok-juego" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Público: juegos -->
+  <section class="bloque">
+    <div class="titulo-bloque">
+      <img class="ilus-titulo" src="img/baston.webp" alt="" loading="lazy" decoding="async">
+      <div>
+        <h2>Juegos para el gran día</h2>
+        <p class="suave">Cada participante propone uno. Si ves 🏆, ¡ese juego tiene premio!</p>
+      </div>
+    </div>
+    <div class="juegos" id="lista-juegos"><p class="vacio">Cargando…</p></div>
+  </section>
+
+  <!-- Público: participantes -->
+  <section class="bloque cierre">
+    <article class="tarjeta participantes">
+      <img class="esquina grande" src="img/muneco.webp" alt="" loading="lazy" decoding="async">
+      <h2>Participantes</h2>
+      <p class="amarillo" id="num-personas"></p>
+      <p class="leyenda suave">📝 lista · 🎲 juego · 🎁 regalo comprado</p>
+      <ul class="lista-personas" id="marcador"></ul>
+    </article>
+    <article class="tarjeta despedida">
+      <img class="desp-campana" src="img/vela.webp" alt="" loading="lazy" decoding="async">
+      <h2>Compartir es querer</h2>
+      <p class="suave">Envuelve tu regalo con cariño, trae tu mejor ánimo para los juegos y prepárate para adivinar quién fue tu Santa.</p>
+      <img class="desp-trineo" src="img/trineo.webp" alt="" loading="lazy" decoding="async">
+    </article>
+  </section>
+</main>
+
+<footer class="pie">Hecho con cariño para nuestro intercambio 🎄<br><a href="/admin">Organizador</a></footer>
+
+<template id="fila-deseo">
+  <div class="fila-deseo">
+    <input name="texto" maxlength="120" placeholder="¿Qué te gustaría?" aria-label="Idea">
+    <div class="precio"><span>$</span><input name="precio" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Precio" aria-label="Precio aproximado"></div>
+    <input name="link" maxlength="300" placeholder="Enlace (opcional)" aria-label="Enlace">
+    <button type="button" class="quitar" aria-label="Quitar">✕</button>
+  </div>
+</template>
+
+<script src="app.js"></script>
+</body>
+</html>
