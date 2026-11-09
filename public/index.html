@@ -78,6 +78,18 @@
     </article>
   </section>
 
+  <!-- Aviso de fecha límite -->
+  <section class="tarjeta aviso-limite" id="aviso-limite" hidden>
+    <img class="aviso-ilus" src="img/campana.webp" alt="">
+    <div class="aviso-texto">
+      <p class="etiqueta">Fecha límite</p>
+      <h2 id="limite-titulo">Tienes hasta el 30 de noviembre</h2>
+      <p class="suave" id="limite-texto">para dejar tu lista de deseos y proponer tu juego.</p>
+      <ul class="pendientes" id="limite-pendientes" hidden></ul>
+    </div>
+    <div class="aviso-dias" id="limite-dias"><strong>0</strong><span>días</span></div>
+  </section>
+
   <!-- Entrar -->
   <section class="tarjeta entrar" id="entrar">
     <img class="entrar-ilus" src="img/regalo.webp" alt="" loading="lazy" decoding="async">
@@ -133,7 +145,7 @@
           <img class="sobre-regalo" src="img/regalo.webp" alt="" loading="lazy" decoding="async">
           <span class="sobre-tapa">Toca el regalo ✨</span>
           <span class="sobre-nombre">
-            <img class="estrella-ilus" src="img/estrella.webp" alt="" loading="lazy" decoding="async">
+            <img class="estrella-ilus" id="revelar-ilus" src="img/estrella.webp" alt="" decoding="async">
             <b id="amigo-nombre"></b>
           </span>
         </button>
@@ -170,6 +182,28 @@
           <button class="btn">Dejar pista</button>
         </form>
         <ul class="hilo" id="hilo-pistas"></ul>
+      </div>
+
+      <div class="tarjeta envolver" id="envolver-amigo">
+        <h3>Así vas a envolver el regalo de <span id="envolver-nombre"></span> 🎁</h3>
+        <p class="suave">Este año el regalo va disfrazado de la persona que lo recibe: su cara impresa es la "cabeza" del regalo.</p>
+        <div class="envolver-rejilla">
+          <figure class="envolver-ejemplo recorte">
+            <div class="marco-foto"><img src="img/ejemplo-recorte.webp" alt="Ejemplo: cara impresa y recortada, lista para pegar en el regalo" loading="lazy"></div>
+            <figcaption>1. Recorta su cara así</figcaption>
+          </figure>
+          <figure class="envolver-ejemplo">
+            <img src="img/ejemplo-envoltura.webp" alt="Ejemplo: regalo envuelto con papel navideño, con una cara impresa arriba y un cuello de camisa hecho de papel" loading="lazy">
+            <figcaption>2. Así debe quedar 😂</figcaption>
+          </figure>
+        </div>
+        <ol class="pasos">
+          <li><b>Consigue una foto de frente</b> de tu amigo secreto, sin que sospeche.</li>
+          <li><b>Imprímela grande</b>, en tamaño carta, y recorta la cara.</li>
+          <li><b>Envuelve la caja</b> con papel navideño.</li>
+          <li><b>Pega la cara</b> arriba y arma un cuello o un cuerpo con el papel, como en el ejemplo.</li>
+          <li><b>¡Entre más ridículo, mejor!</b></li>
+        </ol>
       </div>
       </div>
     </div>
@@ -247,6 +281,37 @@
           <p class="ok" id="ok-juego" role="status"></p>
         </form>
       </div>
+    </div>
+  </section>
+
+  <!-- Público: cómo envolver -->
+  <section class="bloque" id="envolver-publico">
+    <div class="titulo-bloque">
+      <img class="ilus-titulo" src="img/regalo.webp" alt="" loading="lazy">
+      <div>
+        <h2>Cómo envolver tu regalo</h2>
+        <p class="suave">Entra con tu código para saber a quién le toca tu regalo.</p>
+      </div>
+    </div>
+    <div class="tarjeta envolver">
+      <p class="suave">Este año el regalo va disfrazado de la persona que lo recibe: su cara impresa es la "cabeza" del regalo.</p>
+      <div class="envolver-rejilla">
+          <figure class="envolver-ejemplo recorte">
+            <div class="marco-foto"><img src="img/ejemplo-recorte.webp" alt="Ejemplo: cara impresa y recortada, lista para pegar en el regalo" loading="lazy"></div>
+            <figcaption>1. Recorta su cara así</figcaption>
+          </figure>
+          <figure class="envolver-ejemplo">
+            <img src="img/ejemplo-envoltura.webp" alt="Ejemplo: regalo envuelto con papel navideño, con una cara impresa arriba y un cuello de camisa hecho de papel" loading="lazy">
+            <figcaption>2. Así debe quedar 😂</figcaption>
+          </figure>
+      </div>
+      <ol class="pasos">
+          <li><b>Consigue una foto de frente</b> de tu amigo secreto, sin que sospeche.</li>
+          <li><b>Imprímela grande</b>, en tamaño carta, y recorta la cara.</li>
+          <li><b>Envuelve la caja</b> con papel navideño.</li>
+          <li><b>Pega la cara</b> arriba y arma un cuello o un cuerpo con el papel, como en el ejemplo.</li>
+          <li><b>¡Entre más ridículo, mejor!</b></li>
+        </ol>
     </div>
   </section>
 

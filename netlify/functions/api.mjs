@@ -23,6 +23,7 @@ const PALABRAS = [
 
 const EVENTO_INICIAL = {
   nombre: "Secret Santa", fecha: "", lugar: "", presupuesto: 25, moneda: "USD", mensaje: "",
+  fechaLimite: "2026-11-30",
 };
 
 // ---------------------------------------------------------------- utilidades
@@ -195,6 +196,7 @@ async function rutasAdmin(req, ruta, metodo, store) {
     const presupuesto = Number(b.presupuesto);
     if (!Number.isFinite(presupuesto) || presupuesto <= 0) fallo(400, "El presupuesto debe ser mayor que 0.");
     if (b.fecha && Number.isNaN(Date.parse(b.fecha))) fallo(400, "La fecha no es válida.");
+    if (b.fechaLimite && !/^\d{4}-\d{2}-\d{2}$/.test(b.fechaLimite)) fallo(400, "La fecha límite no es válida.");
     datos.evento = {
       nombre: texto(b.nombre, 60) || "Secret Santa",
       fecha: texto(b.fecha, 25),
@@ -202,6 +204,7 @@ async function rutasAdmin(req, ruta, metodo, store) {
       presupuesto: Math.round(presupuesto * 100) / 100,
       moneda: texto(b.moneda, 6).toUpperCase() || "USD",
       mensaje: texto(b.mensaje, 160),
+      fechaLimite: texto(b.fechaLimite, 10),
     };
     await store.setJSON("evento", datos.evento);
     return estado();
@@ -264,7 +267,7 @@ async function rutasAdmin(req, ruta, metodo, store) {
       const restantes = participantes.filter((x) => x.id !== p.id)
         .map((x) => ({ ...x, excluir: (x.excluir || []).filter((id) => id !== p.id) }));
       await store.setJSON("participantes", restantes);
-      await Promise.all(["deseos", "juegos", "comprado", "preguntas", "pistas"].map((k) => store.delete(`${k}/${p.id}`)));
+      await Promise.all(["deseos", "juegos", "comprado", "preguntas", "pistas", "fotos"].map((k) => store.delete(`${k}/${p.id}`)));
       datos.participantes = restantes;
       if (datos.sorteo) { datos.sorteo = null; await store.delete("sorteo"); await borrarMensajes(store, restantes); }
       return estado();
@@ -324,9 +327,14 @@ async function manejar(req) {
   };
 
   if (ruta === "entrar" && metodo === "POST") {
-    const comprado = await leer(store, `comprado/${yo.id}`, null);
+    const [comprado, deseos, juego] = await Promise.all([
+      leer(store, `comprado/${yo.id}`, null),
+      leer(store, `deseos/${yo.id}`, null),
+      leer(store, `juegos/${yo.id}`, null),
+    ]);
     return json({
       id: yo.id, nombre: yo.nombre, comprado: Boolean(comprado?.valor),
+      tieneLista: Boolean(deseos?.items?.length), tieneJuego: Boolean(juego),
       sorteo: sorteo ? sorteo.hecho : null,
       amigo: miAmigo ? { id: miAmigo.id, nombre: miAmigo.nombre } : null,
     });

@@ -58,6 +58,41 @@ function pintarEvento() {
   $("#evento-presupuesto").textContent = lim;
   $$(".limite").forEach((e) => (e.textContent = lim));
   if (ev.fecha) iniciarCuenta(new Date(ev.fecha));
+  pintarLimite();
+}
+
+// Aviso de fecha límite para lista de deseos y juego
+function pintarLimite() {
+  const lim = estado.evento?.fechaLimite;
+  const caja = $("#aviso-limite");
+  if (!lim) { caja.hidden = true; return; }
+  const fin = new Date(`${lim}T23:59:59`);
+  const bonita = fin.toLocaleDateString("es", { day: "numeric", month: "long" });
+  const dias = Math.ceil((fin - Date.now()) / 86400000);
+  const yo = estado.yo;
+  const faltan = yo ? [!yo.tieneLista && "tu lista de deseos", !yo.tieneJuego && "tu propuesta de juego"].filter(Boolean) : null;
+  caja.hidden = false;
+  caja.classList.toggle("cumplido", Boolean(faltan && !faltan.length));
+  caja.classList.toggle("cerrado", dias < 0);
+
+  if (dias < 0) {
+    $("#limite-titulo").textContent = `El plazo cerró el ${bonita}`;
+    $("#limite-texto").textContent = "Si todavía no dejaste tu lista o tu juego, hazlo cuanto antes. ¡Tu Santa te lo agradecerá!";
+  } else {
+    $("#limite-titulo").textContent = `Tienes hasta el ${bonita}`;
+    $("#limite-texto").textContent = "para dejar tu lista de deseos y proponer tu juego.";
+  }
+  $("#limite-dias").hidden = dias < 0;
+  $("#limite-dias strong").textContent = Math.max(dias, 0);
+  $("#limite-dias span").textContent = dias === 1 ? "día" : "días";
+
+  const ul = $("#limite-pendientes");
+  ul.hidden = !faltan;
+  if (faltan) {
+    ul.innerHTML = faltan.length
+      ? faltan.map((f) => `<li>⏳ Te falta ${f}</li>`).join("")
+      : `<li>✅ ¡Ya tienes tu lista y tu juego! Puedes editarlos cuando quieras.</li>`;
+  }
 }
 
 function iniciarCuenta(meta) {
@@ -173,8 +208,11 @@ function mostrarPanel() {
   $("#sobre").hidden = $("#amigo-extra").hidden = $("#caja-comprado").hidden = !hayAmigo;
   $("#sin-sorteo").hidden = hayAmigo;
   $("#revelar-etiqueta").textContent = hayAmigo ? "Te toca regalarle a…" : "Tu amigo secreto";
+  pintarLimite();
+  $("#envolver-publico").hidden = hayAmigo;
   if (hayAmigo) {
     $("#amigo-nombre").textContent = estado.amigo.nombre;
+    $("#envolver-nombre").textContent = estado.amigo.nombre;
     if (guardar.get(claveRevelado())) revelar();
     else $("#tile-amigo").textContent = "Toca el regalo para verlo";
     cargarAmigo();
@@ -277,6 +315,8 @@ async function guardarLista(ev) {
     try {
       await api("deseos", { metodo: "PUT", datos: { items } });
       ok.textContent = "¡Lista guardada! Tu Santa ya puede verla. 🎁";
+      estado.yo.tieneLista = items.length > 0;
+      pintarLimite();
       cargarPublico();
     } catch (e) { err.textContent = e.message; }
   });
@@ -341,6 +381,8 @@ async function guardarJuego(ev) {
     try {
       await api("juego", { metodo: "PUT", datos });
       ok.textContent = "¡Tu juego ya aparece en la lista pública! 🎲";
+      estado.yo.tieneJuego = true;
+      pintarLimite();
       $("#borrar-juego").hidden = false;
       cargarPublico();
     } catch (e) { err.textContent = e.message; }
@@ -354,6 +396,8 @@ async function borrarJuego() {
     $("#form-juego").reset();
     $("#borrar-juego").hidden = true;
     $("#ok-juego").textContent = "Propuesta retirada.";
+    estado.yo.tieneJuego = false;
+    pintarLimite();
     cargarPublico();
   } catch (e) { $("#error-juego").textContent = e.message; }
 }

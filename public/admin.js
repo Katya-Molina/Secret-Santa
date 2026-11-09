@@ -66,6 +66,8 @@ function avatar(nombre) {
   return `<span class="avatar" style="background:linear-gradient(145deg,${a},${b});${oscuro}" aria-hidden="true">${esc([...nombre.trim()][0]?.toUpperCase() || "?")}</span>`;
 }
 
+const fechaCorta = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString("es", { day: "numeric", month: "long" });
+
 const enlace = (p) => `${location.origin}/?c=${encodeURIComponent(p.codigo)}`;
 function mensaje(p) {
   const ev = datos.evento;
@@ -76,6 +78,7 @@ function mensaje(p) {
     `🔑 Tu código secreto es: *${p.codigo}*\n` +
     `👉 Entra aquí: ${enlace(p)}\n\n` +
     `Ahí verás a quién te toca regalarle, puedes escribir tu lista de deseos (máximo $${ev.presupuesto} ${ev.moneda}) y proponer un juego. ` +
+    (ev.fechaLimite ? `\n\n⏰ Tienes hasta el *${fechaCorta(ev.fechaLimite)}* para dejar tu lista de deseos y tu juego.\n\n` : "") +
     `No le compartas tu código a nadie 🤫`;
 }
 
@@ -100,6 +103,7 @@ function pintar(d) {
     f.elements.presupuesto.value = ev.presupuesto;
     f.elements.moneda.value = ev.moneda;
     f.elements.mensaje.value = ev.mensaje;
+    f.elements.fechaLimite.value = ev.fechaLimite || "";
   }
 
   // Sorteo

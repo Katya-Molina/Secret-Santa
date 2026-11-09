@@ -9,10 +9,13 @@ Página para organizar el intercambio de regalos.
 - Copiar el código, el enlace o un mensaje listo, o enviarlo directo por **WhatsApp**.
 - Exclusiones: marcar quiénes no se pueden tocar entre sí (parejas, familia).
 - **Hacer el sorteo con un botón.** Nadie se saca a sí mismo y se evita, si se puede, que dos personas se regalen mutuamente. Ni el organizador ve quién le tocó a quién.
+- **Fecha límite** para la lista de deseos y el juego (30 de noviembre por defecto).
 - Ver el avance de cada persona: lista, juego y regalo comprado.
 
 **Para los participantes** (página principal, con su código):
 - Revelar a su amigo secreto tocando un regalo.
+- **Aviso de fecha límite** con los días que faltan y lo que le falta a cada quien.
+- **Cómo envolver el regalo:** con su cara impresa como "cabeza" del regalo, con un ejemplo paso a paso.
 - **Lista de deseos** de hasta 5 ideas, con límite de **$25** por idea.
 - **Buzón anónimo**: preguntarle cosas a su amigo secreto sin que sepa quién es.
 - **Pistas misteriosas** para adivinar quién es su Santa.
