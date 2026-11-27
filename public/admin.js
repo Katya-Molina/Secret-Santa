@@ -239,7 +239,7 @@ async function cambiarExclusion(ev) {
 async function sortear() {
   const btn = $("#hacer-sorteo");
   $("#error-sorteo").textContent = $("#ok-sorteo").textContent = "";
-  if (datos.sorteo && !confirm("¿Repetir el sorteo? Todos tendrán un amigo secreto nuevo y se borrarán las preguntas. Los códigos no cambian.")) return;
+  if (datos.sorteo && !confirm("¿Repetir el sorteo?\n\nTodos tendrán un amigo secreto nuevo y se borrarán las preguntas del chat.\n\nSe conservan: los códigos, los juegos publicados y las listas de deseos.")) return;
   await enviando(btn, async () => {
     try {
       pintar(await api("sorteo", "POST"));
