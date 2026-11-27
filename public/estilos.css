@@ -562,3 +562,36 @@ a.btn-sec { text-decoration: none; display: inline-block; }
 
 .envolver-rejilla { max-width: 720px; margin-inline: auto; }
 .recorte .marco-foto img { width: 100%; height: 100%; object-fit: contain; box-shadow: none; border-radius: 0; aspect-ratio: auto; }
+
+
+/* ---------- Chat de preguntas ---------- */
+:root { --azul: #3b82f6; --azul-osc: #2563eb; }
+.leyenda-chat { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .82rem; color: var(--suave); margin: -4px 0 12px; }
+.leyenda-chat .punto { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.leyenda-chat .punto.blanco { margin-left: 8px; }
+.punto.azul { background: var(--azul); }
+.punto.blanco { background: #fff; }
+.chat {
+  list-style: none; margin: 0 0 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px;
+  background: rgba(6, 28, 15, .35); border: 1px solid var(--linea); border-radius: 24px;
+  max-height: 420px; overflow-y: auto;
+}
+.msg { display: flex; flex-direction: column; max-width: 82%; }
+.msg.derecha { align-self: flex-end; align-items: flex-end; }
+.msg.izquierda { align-self: flex-start; align-items: flex-start; }
+.globo { padding: 10px 14px; border-radius: 18px; line-height: 1.4; overflow-wrap: anywhere; box-shadow: 0 6px 14px -8px rgba(0,0,0,.5); }
+.msg.pregunta .globo { background: linear-gradient(160deg, var(--azul), var(--azul-osc)); color: #fff; }
+.msg.respuesta .globo { background: #fff; color: #173b25; }
+.msg.derecha .globo { border-bottom-right-radius: 6px; }
+.msg.izquierda .globo { border-bottom-left-radius: 6px; }
+.autor { font-size: .76rem; color: var(--suave); margin-top: 4px; padding: 0 6px; font-weight: 500; }
+.chat .esperando { align-self: flex-start; font-size: .82rem; font-style: italic; color: var(--tenue); padding-left: 6px; }
+.chat .responder { align-self: stretch; }
+.chat .responder .pildora { margin: 0; }
+.chat .vacio { text-align: center; padding: 10px !important; }
+@media (max-width: 720px) {
+  #form-pregunta, .chat .pildora { flex-wrap: nowrap; border-radius: 999px; }
+  #form-pregunta input, .chat .pildora input { flex-basis: auto; }
+  #form-pregunta .btn, .chat .pildora .btn { flex: none; padding-inline: 16px; }
+  .msg { max-width: 90%; }
+}

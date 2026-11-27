@@ -210,6 +210,7 @@ function mostrarPanel() {
   pintarLimite();
   if (hayAmigo) {
     $("#amigo-nombre").textContent = estado.amigo.nombre;
+    $("#pregunta-nombre").textContent = estado.amigo.nombre;
     if (guardar.get(claveRevelado())) revelar();
     else $("#tile-amigo").textContent = "Toca el regalo para verlo";
     cargarAmigo();
@@ -253,11 +254,25 @@ async function cargarAmigo() {
   }
 }
 
+// Burbuja de chat: las preguntas van en azul y las respuestas en blanco
+const burbuja = (tipo, lado, texto, autor, fecha) => `<li class="msg ${tipo} ${lado}">
+    <div class="globo">${esc(texto)}</div>
+    <div class="autor">${esc(autor)}${fecha ? ` · ${fechaCorta(fecha)}` : ""}</div>
+  </li>`;
+
+// Vista del Santa: yo pregunto (derecha, azul), mi amigo responde (izquierda, blanco)
 function pintarHiloSanta({ preguntas }) {
-  $("#hilo-preguntas").innerHTML = preguntas.slice().reverse().map((q) => `<li>
-      <div>❓ ${esc(q.texto)}</div>
-      ${q.respuesta ? `<div class="resp">💬 ${esc(q.respuesta)}</div>` : `<div class="fecha">Esperando respuesta…</div>`}
-    </li>`).join("");
+  const amigo = estado.amigo.nombre;
+  $("#hilo-preguntas").innerHTML = preguntas.length
+    ? preguntas.map((q) =>
+        burbuja("pregunta", "derecha", q.texto, "Tú", q.creado) +
+        (q.respuesta
+          ? burbuja("respuesta", "izquierda", q.respuesta, amigo, q.respondido)
+          : `<li class="esperando">${esc(amigo)} todavía no responde…</li>`)
+      ).join("")
+    : `<li class="vacio">Todavía no le has preguntado nada a ${esc(amigo)}.</li>`;
+  const chat = $("#hilo-preguntas");
+  chat.scrollTop = chat.scrollHeight;
 }
 
 async function enviarAlAmigo(form, ruta) {
@@ -326,14 +341,15 @@ async function cargarBuzon() {
     const sinResponder = preguntas.filter((q) => !q.respuesta).length;
     $("#burbuja-buzon").hidden = !sinResponder;
     $("#burbuja-buzon").textContent = sinResponder;
+    // Vista de quien recibe: su Santa pregunta (izquierda, azul), yo respondo (derecha, blanco)
     $("#buzon-preguntas").innerHTML = preguntas.length
-      ? preguntas.slice().reverse().map((q) => `<li>
-          <div>❓ ${esc(q.texto)} <span class="fecha">· ${fechaCorta(q.creado)}</span></div>
-          ${q.respuesta
-            ? `<div class="resp">💬 ${esc(q.respuesta)}</div>`
-            : `<form class="pildora" data-id="${esc(q.id)}"><input name="respuesta" maxlength="280" placeholder="Tu respuesta…" required><button class="btn">Responder</button></form>`}
-        </li>`).join("")
-      : `<li class="vacio">Tu Santa aún no te ha preguntado nada.</li>`;
+      ? preguntas.map((q) =>
+          burbuja("pregunta", "izquierda", q.texto, "Tu Santa secreto 🎅", q.creado) +
+          (q.respuesta
+            ? burbuja("respuesta", "derecha", q.respuesta, "Tú", q.respondido)
+            : `<li class="responder"><form class="pildora" data-id="${esc(q.id)}"><input name="respuesta" maxlength="280" placeholder="Escribe tu respuesta…" required><button class="btn">Responder</button></form></li>`)
+        ).join("")
+      : `<li class="vacio">Tu Santa secreto aún no te ha preguntado nada.</li>`;
     $$("#buzon-preguntas form").forEach((f) => f.addEventListener("submit", responder));
   } catch (e) {
     $("#buzon-preguntas").innerHTML = `<li class="vacio">${esc(e.message)}</li>`;

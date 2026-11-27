@@ -162,13 +162,14 @@
           <ul class="deseos" id="deseos-amigo"><li class="vacio">Cargando…</li></ul>
         </div>
         <div class="tarjeta">
-          <h3>Pregúntale en secreto</h3>
-          <p class="suave">No sabrá que eres tú. Ej. "¿Qué talla usas?" o "¿Dulce o salado?"</p>
+          <h3>Pregúntale a <span id="pregunta-nombre" class="amarillo"></span></h3>
+          <p class="suave">No sabrá que eres tú.</p>
+          <div class="leyenda-chat"><span class="punto azul"></span>Tu pregunta <span class="punto blanco"></span>Su respuesta</div>
+          <ul class="chat" id="hilo-preguntas"></ul>
           <form id="form-pregunta" class="pildora">
             <input name="texto" maxlength="280" placeholder="Escribe tu pregunta…" required>
             <button class="btn">Enviar</button>
           </form>
-          <ul class="hilo" id="hilo-preguntas"></ul>
         </div>
       </div>
 
@@ -197,8 +198,10 @@
     <div class="tab" data-panel="buzon" hidden>
       <div>
         <div class="tarjeta">
-          <h3>Preguntas de tu Santa</h3>
-          <ul class="hilo" id="buzon-preguntas"></ul>
+          <h3>Preguntas de tu Santa secreto 🎅</h3>
+          <p class="suave">Te pregunta sin decirte quién es. Respóndele aquí abajo.</p>
+          <div class="leyenda-chat"><span class="punto azul"></span>Su pregunta <span class="punto blanco"></span>Tu respuesta</div>
+          <ul class="chat" id="buzon-preguntas"></ul>
         </div>
       </div>
     </div>
