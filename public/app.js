@@ -85,13 +85,26 @@ function pintarLimite() {
   $("#limite-dias strong").textContent = Math.max(dias, 0);
   $("#limite-dias span").textContent = dias === 1 ? "día" : "días";
 
+  pintarCtaLista();
   const ul = $("#limite-pendientes");
   ul.hidden = !faltan;
   if (faltan) {
     ul.innerHTML = faltan.length
-      ? faltan.map((f) => `<li>⏳ Te falta ${f}</li>`).join("")
+      ? faltan.map((f) => `<li><button type="button" data-ir="${f.includes("lista") ? "lista" : "juego"}">⏳ Te falta ${f} →</button></li>`).join("")
       : `<li>✅ ¡Ya tienes tu lista y tu juego! Puedes editarlos cuando quieras.</li>`;
   }
+}
+
+function pintarCtaLista() {
+  if (!estado.yo) return;
+  const tiene = estado.yo.tieneLista;
+  $("#cta-lista").classList.toggle("lista-lista", tiene);
+  $("#cta-titulo").textContent = tiene ? "✅ Ya tienes tu lista de deseos" : "¿Ya escribiste lo que TÚ quieres recibir?";
+  $("#cta-sub").innerHTML = tiene
+    ? "Tu Santa ya puede verla. Puedes cambiarla cuando quieras."
+    : "Tu lista se escribe en la pestaña <b>Mi lista de deseos</b>, no en el chat. Tu Santa la verá ahí.";
+  $("#cta-boton").textContent = tiene ? "✏️ Editar mi lista" : "📝 Escribir mi lista";
+  $("#burbuja-lista").hidden = tiene;
 }
 
 function iniciarCuenta(meta) {
@@ -202,6 +215,9 @@ function mostrarPanel() {
   $("#panel").hidden = false;
   $("#mi-nombre").textContent = estado.yo.nombre;
   $("#comprado").checked = estado.yo.comprado;
+  // Al entrar, cada sección pública pasa a su pestaña: así cada pestaña muestra solo lo suyo
+  $('[data-panel="juego"]').append($("#bloque-juegos"));
+  $('[data-panel="evento"]').append($(".inicio"), $("#bloque-participantes"));
   document.body.classList.add("con-panel");
   const hayAmigo = Boolean(estado.amigo);
   $("#sobre").hidden = $("#amigo-extra").hidden = $("#caja-comprado").hidden = !hayAmigo;
@@ -211,6 +227,7 @@ function mostrarPanel() {
   if (hayAmigo) {
     $("#amigo-nombre").textContent = estado.amigo.nombre;
     $("#pregunta-nombre").textContent = estado.amigo.nombre;
+    $("#deseos-nombre").textContent = estado.amigo.nombre;
     if (guardar.get(claveRevelado())) revelar();
     else $("#tile-amigo").textContent = "Toca el regalo para verlo";
     cargarAmigo();
@@ -229,11 +246,22 @@ function revelar() {
   guardar.set(claveRevelado(), "1");
 }
 
-function cambiarTab(nombre) {
+function irA(nombre) {
+  cambiarTab(nombre);
+}
+
+function cambiarTab(nombre, desplazar = true) {
   $$(".pestanas button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === nombre)));
   $$(".tab").forEach((t) => (t.hidden = t.dataset.panel !== nombre));
   if (nombre === "buzon") cargarBuzon();
   guardar.set("santa-tab", nombre);
+  // Si estabas más abajo, sube hasta el inicio de la pestaña
+  if (desplazar) {
+    const barra = $(".pestanas");
+    const panel = $(`[data-panel="${nombre}"]`);
+    const destino = scrollY + panel.getBoundingClientRect().top - barra.offsetHeight - 24;
+    if (scrollY > destino) window.scrollTo({ top: Math.max(destino, 0), behavior: "smooth" });
+  }
 }
 
 // ---------------------------------------------------------------- mi amigo secreto
@@ -435,6 +463,11 @@ async function iniciar() {
   $("#salir").onclick = salir;
   $$(".pestanas button").forEach((b) => (b.onclick = () => cambiarTab(b.dataset.tab)));
   $("#sobre").onclick = revelar;
+  $("#cta-boton").onclick = () => irA("lista");
+  $("#limite-pendientes").addEventListener("click", (ev) => {
+    const b = ev.target.closest("[data-ir]");
+    if (b && estado.yo) irA(b.dataset.ir);
+  });
   $("#comprado").onchange = async (ev) => {
     try { await api("comprado", { metodo: "PUT", datos: { valor: ev.target.checked } }); cargarPublico(); }
     catch (e) { ev.target.checked = !ev.target.checked; alert(e.message); }
@@ -453,7 +486,7 @@ async function iniciar() {
   if (codigo) {
     await entrar(codigo, !delEnlace);
     const tab = guardar.get("santa-tab");
-    if (estado.yo && tab) cambiarTab(tab);
+    if (estado.yo && tab) cambiarTab(tab, false);
   }
 }
 

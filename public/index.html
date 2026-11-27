@@ -117,9 +117,10 @@
         <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M3 13h18M12 9v12M12 9C9 3 5 5 7 8c1 1 5 1 5 1zm0 0c3-6 7-4 5-1-1 1-5 1-5 1z"/></svg>
         <span>Mi amigo</span>
       </button>
-      <button role="tab" data-tab="lista">
+      <button role="tab" data-tab="lista" class="tab-lista">
         <svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2"/><circle cx="4.5" cy="12" r="1.2"/><circle cx="4.5" cy="18" r="1.2"/></svg>
-        <span>Mi lista</span>
+        <span>Mi lista<span class="solo-grande"> de deseos</span></span>
+        <i class="burbuja" id="burbuja-lista" hidden>!</i>
       </button>
       <button role="tab" data-tab="buzon">
         <svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-5 4V6a1 1 0 0 1 1-1z"/></svg>
@@ -128,7 +129,11 @@
       </button>
       <button role="tab" data-tab="juego">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="15.5" cy="8.5" r="1.3"/><circle cx="8.5" cy="15.5" r="1.3"/></svg>
-        <span>Mi juego</span>
+        <span>Juegos</span>
+      </button>
+      <button role="tab" data-tab="evento">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        <span>Evento</span>
       </button>
     </nav>
 
@@ -155,15 +160,26 @@
         </label>
       </div>
 
+      <div class="tarjeta cta-lista" id="cta-lista">
+        <img class="cta-ilus" src="img/arbol.webp" alt="">
+        <div class="cta-texto">
+          <p class="etiqueta">Tu lista de deseos</p>
+          <h3 id="cta-titulo">¿Ya escribiste lo que TÚ quieres recibir?</h3>
+          <p id="cta-sub">Tu lista se escribe en la pestaña <b>Mi lista de deseos</b>, no en el chat. Tu Santa la verá ahí.</p>
+        </div>
+        <button class="btn" id="cta-boton" type="button">📝 Escribir mi lista</button>
+      </div>
+
       <div id="amigo-extra">
       <div class="rejilla">
         <div class="tarjeta">
-          <h3>Su lista de deseos</h3>
+          <h3>Lo que quiere <span id="deseos-nombre" class="amarillo"></span></h3>
+          <p class="suave">Su lista de deseos.</p>
           <ul class="deseos" id="deseos-amigo"><li class="vacio">Cargando…</li></ul>
         </div>
         <div class="tarjeta">
           <h3>Pregúntale a <span id="pregunta-nombre" class="amarillo"></span></h3>
-          <p class="suave">No sabrá que eres tú.</p>
+          <p class="suave">No sabrá que eres tú. Este chat es solo para preguntarle cosas; <b>tu lista va en "Mi lista de deseos"</b>.</p>
           <div class="leyenda-chat"><span class="punto azul"></span>Tu pregunta <span class="punto blanco"></span>Su respuesta</div>
           <ul class="chat" id="hilo-preguntas"></ul>
           <form id="form-pregunta" class="pildora">
@@ -178,10 +194,11 @@
 
     <!-- Mi lista -->
     <div class="tab" data-panel="lista" hidden>
-      <div class="tarjeta con-ilus">
+      <div class="tarjeta con-ilus tarjeta-lista">
         <img class="esquina" src="img/arbol.webp" alt="" loading="lazy" decoding="async">
-        <h3>Mi lista de deseos</h3>
-        <p class="suave">Hasta 5 ideas, cada una de máximo <b class="limite amarillo">$25</b>. Tu Santa la verá sin que sepas quién es.</p>
+        <p class="etiqueta">Aquí va tu lista</p>
+        <h2>📝 Mi lista de deseos</h2>
+        <p class="suave">Escribe aquí lo que <b>TÚ</b> te gustaría recibir: hasta 5 ideas, cada una de máximo <b class="limite amarillo">$25</b>. Tu Santa la verá sin que sepas quién es. No olvides pulsar <b>Guardar lista</b>.</p>
         <form id="form-lista">
           <div id="filas-lista"></div>
           <div class="acciones">
@@ -210,7 +227,7 @@
     <div class="tab" data-panel="juego" hidden>
       <div class="tarjeta con-ilus">
         <img class="esquina" src="img/esfera.webp" alt="" loading="lazy" decoding="async">
-        <h3>Propón un juego para el gran día</h3>
+        <h3>Propón tu juego para el gran día</h3>
         <p class="suave">Cada persona propone un juego de mesa o interactivo. Tu propuesta se verá públicamente con tu nombre.</p>
         <div class="nota">
           🏆 <b>¿Le ponemos más feeling?</b> Si gustas, puedes aportar un regalo para quien gane tu juego. Es totalmente opcional.
@@ -247,10 +264,13 @@
         </form>
       </div>
     </div>
+
+    <!-- Evento: datos del evento y participantes (se llenan al entrar) -->
+    <div class="tab" data-panel="evento" hidden></div>
   </section>
 
   <!-- Público: juegos -->
-  <section class="bloque">
+  <section class="bloque" id="bloque-juegos">
     <div class="titulo-bloque">
       <img class="ilus-titulo" src="img/baston.webp" alt="" loading="lazy" decoding="async">
       <div>
@@ -262,7 +282,7 @@
   </section>
 
   <!-- Público: participantes -->
-  <section class="bloque">
+  <section class="bloque" id="bloque-participantes">
     <article class="tarjeta participantes">
       <img class="esquina grande" src="img/muneco.webp" alt="" loading="lazy" decoding="async">
       <h2>Participantes</h2>
