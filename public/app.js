@@ -42,7 +42,6 @@ function pintarEvento() {
   const ev = estado.evento || {};
   document.title = ev.nombre || "Secret Santa";
   $("#evento-nombre").textContent = ev.nombre || "Secret Santa";
-  if (ev.mensaje) $("#evento-mensaje").textContent = ev.mensaje;
   if (ev.fecha) {
     const f = new Date(ev.fecha);
     $("#cal-dia").textContent = f.getDate();
@@ -209,10 +208,8 @@ function mostrarPanel() {
   $("#sin-sorteo").hidden = hayAmigo;
   $("#revelar-etiqueta").textContent = hayAmigo ? "Te toca regalarle a…" : "Tu amigo secreto";
   pintarLimite();
-  $("#envolver-publico").hidden = hayAmigo;
   if (hayAmigo) {
     $("#amigo-nombre").textContent = estado.amigo.nombre;
-    $("#envolver-nombre").textContent = estado.amigo.nombre;
     if (guardar.get(claveRevelado())) revelar();
     else $("#tile-amigo").textContent = "Toca el regalo para verlo";
     cargarAmigo();
@@ -256,12 +253,11 @@ async function cargarAmigo() {
   }
 }
 
-function pintarHiloSanta({ preguntas, pistas }) {
+function pintarHiloSanta({ preguntas }) {
   $("#hilo-preguntas").innerHTML = preguntas.slice().reverse().map((q) => `<li>
       <div>❓ ${esc(q.texto)}</div>
       ${q.respuesta ? `<div class="resp">💬 ${esc(q.respuesta)}</div>` : `<div class="fecha">Esperando respuesta…</div>`}
     </li>`).join("");
-  $("#hilo-pistas").innerHTML = pistas.slice().reverse().map((p) => `<li>🕵️ ${esc(p.texto)} <span class="fecha">· ${fechaCorta(p.creado)}</span></li>`).join("");
 }
 
 async function enviarAlAmigo(form, ruta) {
@@ -326,7 +322,7 @@ async function guardarLista(ev) {
 
 async function cargarBuzon() {
   try {
-    const { preguntas, pistas } = await api("buzon");
+    const { preguntas } = await api("buzon");
     const sinResponder = preguntas.filter((q) => !q.respuesta).length;
     $("#burbuja-buzon").hidden = !sinResponder;
     $("#burbuja-buzon").textContent = sinResponder;
@@ -338,9 +334,6 @@ async function cargarBuzon() {
             : `<form class="pildora" data-id="${esc(q.id)}"><input name="respuesta" maxlength="280" placeholder="Tu respuesta…" required><button class="btn">Responder</button></form>`}
         </li>`).join("")
       : `<li class="vacio">Tu Santa aún no te ha preguntado nada.</li>`;
-    $("#buzon-pistas").innerHTML = pistas.length
-      ? pistas.slice().reverse().map((p) => `<li>🕵️ ${esc(p.texto)} <span class="fecha">· ${fechaCorta(p.creado)}</span></li>`).join("")
-      : `<li class="vacio">Todavía no hay pistas.</li>`;
     $$("#buzon-preguntas form").forEach((f) => f.addEventListener("submit", responder));
   } catch (e) {
     $("#buzon-preguntas").innerHTML = `<li class="vacio">${esc(e.message)}</li>`;
@@ -431,7 +424,6 @@ async function iniciar() {
     catch (e) { ev.target.checked = !ev.target.checked; alert(e.message); }
   };
   $("#form-pregunta").addEventListener("submit", (ev) => { ev.preventDefault(); enviarAlAmigo(ev.currentTarget, "preguntas"); });
-  $("#form-pista").addEventListener("submit", (ev) => { ev.preventDefault(); enviarAlAmigo(ev.currentTarget, "pistas"); });
   $("#agregar-deseo").onclick = () => filaDeseo();
   $("#form-lista").addEventListener("submit", guardarLista);
   $("#form-juego").addEventListener("submit", guardarJuego);

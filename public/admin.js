@@ -102,7 +102,6 @@ function pintar(d) {
     f.elements.lugar.value = ev.lugar;
     f.elements.presupuesto.value = ev.presupuesto;
     f.elements.moneda.value = ev.moneda;
-    f.elements.mensaje.value = ev.mensaje;
     f.elements.fechaLimite.value = ev.fechaLimite || "";
   }
 
@@ -162,7 +161,7 @@ function pintar(d) {
   }).join("");
 }
 
-const avisoSorteo = "Ya hiciste el sorteo. Este cambio lo anulará y tendrás que repetirlo; también se borran las preguntas y pistas enviadas. Los códigos no cambian. ¿Continuar?";
+const avisoSorteo = "Ya hiciste el sorteo. Este cambio lo anulará y tendrás que repetirlo; también se borran las preguntas enviadas. Los códigos no cambian. ¿Continuar?";
 
 // ---------------------------------------------------------------- acciones
 
@@ -240,7 +239,7 @@ async function cambiarExclusion(ev) {
 async function sortear() {
   const btn = $("#hacer-sorteo");
   $("#error-sorteo").textContent = $("#ok-sorteo").textContent = "";
-  if (datos.sorteo && !confirm("¿Repetir el sorteo? Todos tendrán un amigo secreto nuevo y se borrarán las preguntas y pistas. Los códigos no cambian.")) return;
+  if (datos.sorteo && !confirm("¿Repetir el sorteo? Todos tendrán un amigo secreto nuevo y se borrarán las preguntas. Los códigos no cambian.")) return;
   await enviando(btn, async () => {
     try {
       pintar(await api("sorteo", "POST"));
